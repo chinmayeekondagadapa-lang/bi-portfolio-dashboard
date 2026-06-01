@@ -1,0 +1,119 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+  <meta charset="UTF-8" />\
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\
+  <title>BI Portfolio Dashboard | Chinmayee Kondagadapa</title>\
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>\
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>\
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>\
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>\
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />\
+  <style>\
+    *, *::before, *::after \{ box-sizing: border-box; margin: 0; padding: 0; \}\
+    body \{ background: #070f1c; font-family: 'DM Sans', sans-serif; color: #c8dff7; \}\
+    ::-webkit-scrollbar \{ width: 6px; \}\
+    ::-webkit-scrollbar-track \{ background: #0a1628; \}\
+    ::-webkit-scrollbar-thumb \{ background: #1a3a5f; border-radius: 3px; \}\
+    @keyframes fadeUp \{ from \{ opacity: 0; transform: translateY(16px); \} to \{ opacity: 1; transform: translateY(0); \} \}\
+    .fade-up \{ animation: fadeUp 0.6s ease forwards; \}\
+    .fade-up-1 \{ animation: fadeUp 0.6s ease 0.1s forwards; opacity: 0; \}\
+    .fade-up-2 \{ animation: fadeUp 0.6s ease 0.2s forwards; opacity: 0; \}\
+    .fade-up-3 \{ animation: fadeUp 0.6s ease 0.3s forwards; opacity: 0; \}\
+    .fade-up-4 \{ animation: fadeUp 0.6s ease 0.4s forwards; opacity: 0; \}\
+    .kpi-card \{ background: linear-gradient(145deg, #0d1b2e, #0a1628); border: 1px solid #1a3050; border-radius: 12px; padding: 18px 20px; position: relative; overflow: hidden; transition: transform 0.2s, border-color 0.2s; \}\
+    .kpi-card:hover \{ transform: translateY(-2px); border-color: #2a5080; \}\
+    .nav-btn \{ background: transparent; border: none; border-left: 3px solid transparent; color: #4a7aaa; padding: 10px 20px; text-align: left; cursor: pointer; font-size: 13px; font-family: 'DM Sans', sans-serif; transition: all 0.2s; width: 100%; display: block; \}\
+    .nav-btn:hover \{ color: #7ab0d8; background: #0a1628; \}\
+    .nav-btn.active \{ background: linear-gradient(90deg, #0a2040, #0d2a4a); border-left-color: #00C6FF; color: #00C6FF; font-weight: 600; \}\
+    .filter-btn \{ display: block; width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; color: #3a5a7a; padding: 5px 10px; margin-bottom: 3px; cursor: pointer; font-size: 12px; text-align: left; font-family: 'DM Sans', sans-serif; transition: all 0.2s; \}\
+    .filter-btn:hover \{ color: #5ba3e8; border-color: #1a4070; background: #0a1628; \}\
+    .filter-btn.active \{ background: #0d2a4a; border-color: #1a4070; color: #5ba3e8; \}\
+    .chart-card \{ background: #0d1b2e; border: 1px solid #1a3050; border-radius: 12px; padding: 20px 24px; transition: border-color 0.2s; \}\
+    .chart-card:hover \{ border-color: #1e3a5f; \}\
+    .badge-up \{ color: #00E5C6; background: #00E5C618; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 700; \}\
+    .badge-down \{ color: #E5003D; background: #E5003D18; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 700; \}\
+    .pipe-bar-bg \{ background: #0a1628; border-radius: 4px; height: 8px; overflow: hidden; \}\
+    .pipe-bar-fill \{ height: 100%; background: linear-gradient(90deg, #0072E5, #00C6FF); border-radius: 4px; \}\
+  </style>\
+</head>\
+<body>\
+<div id="root"></div>\
+<script type="text/babel">\
+const \{ useState, useEffect \} = React;\
+const \{ AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer \} = Recharts;\
+const COLORS = ["#00C6FF","#0072E5","#00E5C6","#E5A000","#E5003D"];\
+const revenueData = [\{month:"Jan",actual:4200,forecast:4000,prev:3600\},\{month:"Feb",actual:4800,forecast:4600,prev:4100\},\{month:"Mar",actual:5100,forecast:5000,prev:4400\},\{month:"Apr",actual:4700,forecast:5200,prev:4200\},\{month:"May",actual:5600,forecast:5400,prev:4800\},\{month:"Jun",actual:6100,forecast:5800,prev:5100\},\{month:"Jul",actual:5900,forecast:6000,prev:5300\},\{month:"Aug",actual:6400,forecast:6200,prev:5600\},\{month:"Sep",actual:6800,forecast:6500,prev:5900\},\{month:"Oct",actual:7200,forecast:6900,prev:6200\},\{month:"Nov",actual:6900,forecast:7100,prev:6000\},\{month:"Dec",actual:7600,forecast:7400,prev:6500\}];\
+const regionData = [\{region:"Midwest",revenue:18400,target:17000\},\{region:"Northeast",revenue:22100,target:21000\},\{region:"South",revenue:15800,target:16500\},\{region:"West",revenue:19700,target:18500\},\{region:"SW",revenue:12300,target:13000\}];\
+const categoryData = [\{name:"Enterprise",value:38\},\{name:"Mid-Market",value:27\},\{name:"SMB",value:19\},\{name:"Startup",value:10\},\{name:"Government",value:6\}];\
+const pipelineData = [\{stage:"Prospect",count:284,value:8400\},\{stage:"Qualified",count:167,value:6200\},\{stage:"Proposal",count:89,value:4800\},\{stage:"Negotiation",count:44,value:3100\},\{stage:"Closed Won",count:31,value:2200\}];\
+const kpis = [\{label:"Total Revenue",value:"$73.6M",change:"+14.2%",up:true,sub:"vs last year"\},\{label:"Active Customers",value:"1,600",change:"+8.7%",up:true,sub:"across 5 regions"\},\{label:"Avg Deal Size",value:"$46K",change:"+5.3%",up:true,sub:"per closed deal"\},\{label:"Pipeline Value",value:"$24.7M",change:"-2.1%",up:false,sub:"open opportunities"\}];\
+const navItems = ["Overview","Revenue","Pipeline","Customers","Reports"];\
+const CustomTooltip = (\{active,payload,label\}) => \{ if (!active||!payload||!payload.length) return null; return (<div style=\{\{background:"#0d1b2e",border:"1px solid #1e3a5f",borderRadius:8,padding:"10px 14px",fontSize:12,color:"#c8dff7"\}\}><div style=\{\{fontWeight:700,marginBottom:6,color:"#fff"\}\}>\{label\}</div>\{payload.map((p,i)=>(<div key=\{i\} style=\{\{color:p.color,marginBottom:2\}\}>\{p.name\}: <b>\{typeof p.value==="number"&&p.value>999?p.value.toLocaleString():p.value\}</b></div>))\}</div>); \};\
+function App() \{\
+  const [activeNav,setActiveNav] = useState("Overview");\
+  const [filterRegion,setFilterRegion] = useState("All");\
+  const [time,setTime] = useState(new Date());\
+  useEffect(()=>\{ const t=setInterval(()=>setTime(new Date()),1000); return ()=>clearInterval(t); \},[]);\
+  return (\
+    <div style=\{\{display:"flex",flexDirection:"column",minHeight:"100vh"\}\}>\
+      <div style=\{\{background:"linear-gradient(90deg,#0a1628,#0d1f3c)",borderBottom:"1px solid #1a3050",padding:"0 28px",display:"flex",alignItems:"center",justifyContent:"space-between",height:56,position:"sticky",top:0,zIndex:100\}\}>\
+        <div style=\{\{display:"flex",alignItems:"center",gap:14\}\}>\
+          <div style=\{\{width:32,height:32,borderRadius:8,background:"linear-gradient(135deg,#00C6FF,#0072E5)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,fontWeight:900,color:"#fff"\}\}>\uc0\u11041 </div>\
+          <span style=\{\{fontWeight:700,fontSize:15,color:"#fff"\}\}>DataViz <span style=\{\{color:"#00C6FF"\}\}>Analytics</span></span>\
+          <span style=\{\{background:"#0d2a4a",border:"1px solid #1a4070",borderRadius:20,padding:"2px 10px",fontSize:11,color:"#5ba3e8"\}\}>Portfolio Sample</span>\
+        </div>\
+        <div style=\{\{display:"flex",alignItems:"center",gap:20\}\}>\
+          <span style=\{\{fontSize:12,color:"#4a7aaa"\}\}>\{time.toLocaleTimeString([],\{hour:"2-digit",minute:"2-digit"\})\} \'b7 FY 2024</span>\
+          <div style=\{\{width:32,height:32,borderRadius:"50%",background:"linear-gradient(135deg,#0072E5,#00C6FF)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:"#fff"\}\}>CK</div>\
+        </div>\
+      </div>\
+      <div style=\{\{display:"flex",flex:1\}\}>\
+        <div style=\{\{width:200,background:"#080e1c",borderRight:"1px solid #111f33",padding:"24px 0",display:"flex",flexDirection:"column",gap:4\}\}>\
+          <div style=\{\{padding:"0 16px 12px",fontSize:10,letterSpacing:2,color:"#2a4a6a",textTransform:"uppercase"\}\}>Navigation</div>\
+          \{navItems.map(item=>(<button key=\{item\} className=\{"nav-btn"+(activeNav===item?" active":"")\} onClick=\{()=>setActiveNav(item)\}>\{item\}</button>))\}\
+          <div style=\{\{marginTop:20,padding:"0 16px 8px",fontSize:10,letterSpacing:2,color:"#2a4a6a",textTransform:"uppercase"\}\}>Filters</div>\
+          <div style=\{\{padding:"0 16px"\}\}>\
+            <div style=\{\{fontSize:11,color:"#4a7aaa",marginBottom:6\}\}>Region</div>\
+            \{["All","Midwest","Northeast","South","West"].map(r=>(<button key=\{r\} className=\{"filter-btn"+(filterRegion===r?" active":"")\} onClick=\{()=>setFilterRegion(r)\}>\{r\}</button>))\}\
+          </div>\
+          <div style=\{\{marginTop:"auto",padding:"16px"\}\}><div style=\{\{background:"linear-gradient(135deg,#0a2040,#0d1f3c)",border:"1px solid #1a3a5a",borderRadius:10,padding:"12px",fontSize:11,color:"#3a6a9a",lineHeight:1.6\}\}><div style=\{\{color:"#00C6FF",fontWeight:600,marginBottom:4\}\}>Data Sources</div>Snowflake \'b7 Azure SQL<br/>PostgreSQL \'b7 Power BI</div></div>\
+        </div>\
+        <div style=\{\{flex:1,padding:"28px 32px",overflowY:"auto"\}\}>\
+          <div className="fade-up" style=\{\{marginBottom:24\}\}>\
+            <div style=\{\{fontSize:11,color:"#2a5a8a",letterSpacing:2,textTransform:"uppercase",marginBottom:4\}\}>Business Intelligence \'b7 \{activeNav\}</div>\
+            <h1 style=\{\{margin:0,fontSize:22,fontWeight:700,color:"#deeeff"\}\}>Executive Performance Dashboard</h1>\
+            <p style=\{\{margin:"4px 0 0",fontSize:13,color:"#3a6a9a"\}\}>Full Year 2024 \'b7 \{filterRegion==="All"?"All Regions":filterRegion+" Region"\}</p>\
+          </div>\
+          <div className="fade-up-1" style=\{\{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16,marginBottom:24\}\}>\
+            \{kpis.map((kpi,i)=>(<div key=\{i\} className="kpi-card"><div style=\{\{position:"absolute",top:0,right:0,width:60,height:60,background:"radial-gradient(circle at 80% 20%,"+COLORS[i]+"18,transparent 70%)",borderRadius:"0 12px 0 0"\}\}/><div style=\{\{fontSize:11,color:"#3a6a9a",marginBottom:8,textTransform:"uppercase",letterSpacing:1\}\}>\{kpi.label\}</div><div style=\{\{fontSize:26,fontWeight:800,color:"#deeeff"\}\}>\{kpi.value\}</div><div style=\{\{display:"flex",alignItems:"center",gap:6,marginTop:6\}\}><span className=\{kpi.up?"badge-up":"badge-down"\}>\{kpi.change\}</span><span style=\{\{fontSize:11,color:"#2a5a8a"\}\}>\{kpi.sub\}</span></div></div>))\}\
+          </div>\
+          <div className="fade-up-2" style=\{\{display:"grid",gridTemplateColumns:"2fr 1fr",gap:16,marginBottom:16\}\}>\
+            <div className="chart-card">\
+              <div style=\{\{display:"flex",justifyContent:"space-between",marginBottom:20\}\}><div><div style=\{\{fontSize:13,fontWeight:600,color:"#deeeff"\}\}>Revenue Trend</div><div style=\{\{fontSize:11,color:"#3a6a9a"\}\}>Actual vs Forecast vs Prior Year ($K)</div></div><div style=\{\{display:"flex",gap:12,fontSize:11\}\}>\{[["Actual","#00C6FF"],["Forecast","#0072E5"],["Prior Yr","#1a3a5a"]].map(([l,c])=>(<div key=\{l\} style=\{\{display:"flex",alignItems:"center",gap:4,color:"#4a7aaa"\}\}><div style=\{\{width:10,height:3,background:c,borderRadius:2\}\}/>\{l\}</div>))\}</div></div>\
+              <ResponsiveContainer width="100%" height=\{200\}><AreaChart data=\{revenueData\}><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#00C6FF" stopOpacity=\{0.2\}/><stop offset="95%" stopColor="#00C6FF" stopOpacity=\{0\}/></linearGradient></defs><CartesianGrid strokeDasharray="3 3" stroke="#111f33"/><XAxis dataKey="month" tick=\{\{fill:"#3a6a9a",fontSize:11\}\} axisLine=\{false\} tickLine=\{false\}/><YAxis tick=\{\{fill:"#3a6a9a",fontSize:11\}\} axisLine=\{false\} tickLine=\{false\}/><Tooltip content=\{<CustomTooltip/>\}/><Area type="monotone" dataKey="prev" name="Prior Yr" stroke="#1a3a5a" fill="transparent" strokeWidth=\{2\} strokeDasharray="4 2"/><Area type="monotone" dataKey="forecast" name="Forecast" stroke="#0072E5" fill="transparent" strokeWidth=\{2\} strokeDasharray="6 3"/><Area type="monotone" dataKey="actual" name="Actual" stroke="#00C6FF" fill="url(#g1)" strokeWidth=\{2.5\}/></AreaChart></ResponsiveContainer>\
+            </div>\
+            <div className="chart-card"><div style=\{\{fontSize:13,fontWeight:600,color:"#deeeff",marginBottom:4\}\}>Customer Segments</div><div style=\{\{fontSize:11,color:"#3a6a9a",marginBottom:12\}\}>Revenue share by tier</div><ResponsiveContainer width="100%" height=\{160\}><PieChart><Pie data=\{categoryData\} cx="50%" cy="50%" innerRadius=\{45\} outerRadius=\{75\} dataKey="value" stroke="none">\{categoryData.map((_,i)=><Cell key=\{i\} fill=\{COLORS[i%COLORS.length]\}/>)\}</Pie><Tooltip formatter=\{v=>v+"%"\} contentStyle=\{\{background:"#0d1b2e",border:"1px solid #1e3a5f",borderRadius:8,fontSize:12\}\}/></PieChart></ResponsiveContainer><div style=\{\{display:"flex",flexDirection:"column",gap:4,marginTop:8\}\}>\{categoryData.map((d,i)=>(<div key=\{i\} style=\{\{display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:11\}\}><div style=\{\{display:"flex",alignItems:"center",gap:6\}\}><div style=\{\{width:8,height:8,borderRadius:2,background:COLORS[i]\}\}/><span style=\{\{color:"#4a7aaa"\}\}>\{d.name\}</span></div><span style=\{\{color:"#7ab0d8",fontWeight:600\}\}>\{d.value\}%</span></div>))\}</div></div>\
+          </div>\
+          <div className="fade-up-3" style=\{\{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16\}\}>\
+            <div className="chart-card"><div style=\{\{fontSize:13,fontWeight:600,color:"#deeeff",marginBottom:4\}\}>Regional Performance</div><div style=\{\{fontSize:11,color:"#3a6a9a",marginBottom:16\}\}>Revenue vs Target ($K)</div><ResponsiveContainer width="100%" height=\{200\}><BarChart data=\{regionData\} barGap=\{4\}><CartesianGrid strokeDasharray="3 3" stroke="#111f33" vertical=\{false\}/><XAxis dataKey="region" tick=\{\{fill:"#3a6a9a",fontSize:11\}\} axisLine=\{false\} tickLine=\{false\}/><YAxis tick=\{\{fill:"#3a6a9a",fontSize:11\}\} axisLine=\{false\} tickLine=\{false\}/><Tooltip content=\{<CustomTooltip/>\}/><Bar dataKey="revenue" name="Revenue" fill="#00C6FF" radius=\{[4,4,0,0]\}/><Bar dataKey="target" name="Target" fill="#0d3a6a" radius=\{[4,4,0,0]\}/></BarChart></ResponsiveContainer></div>\
+            <div className="chart-card"><div style=\{\{fontSize:13,fontWeight:600,color:"#deeeff",marginBottom:4\}\}>Sales Pipeline</div><div style=\{\{fontSize:11,color:"#3a6a9a",marginBottom:16\}\}>Opportunities by stage</div><div style=\{\{display:"flex",flexDirection:"column",gap:10\}\}>\{pipelineData.map((d,i)=>\{ const pct=Math.round((d.count/pipelineData[0].count)*100); return(<div key=\{i\}><div style=\{\{display:"flex",justifyContent:"space-between",marginBottom:4,fontSize:12\}\}><span style=\{\{color:"#5a8abf"\}\}>\{d.stage\}</span><span style=\{\{color:"#7ab0d8"\}\}>\{d.count\} deals \'b7 <b style=\{\{color:"#00C6FF"\}\}>$\{d.value\}K</b></span></div><div className="pipe-bar-bg"><div className="pipe-bar-fill" style=\{\{width:pct+"%"\}\}/></div></div>); \})\}</div><div style=\{\{marginTop:20,padding:"12px 14px",background:"#070f1c",borderRadius:8,border:"1px solid #111f33",display:"flex",justifyContent:"space-between",fontSize:12\}\}><span style=\{\{color:"#3a6a9a"\}\}>Win Rate</span><span style=\{\{color:"#00E5C6",fontWeight:700\}\}>31 / 284 = 10.9%</span></div></div>\
+          </div>\
+          <div className="fade-up-4" style=\{\{marginTop:24,display:"flex",justifyContent:"space-between",fontSize:11,color:"#1e3a5a",borderTop:"1px solid #0d1e30",paddingTop:16\}\}><span>Built by Chinmayee Kondagadapa \'b7 Senior BI Analyst &amp; Analytics Engineer</span><span>Power BI \'b7 Snowflake \'b7 dbt \'b7 Azure SQL \'b7 PostgreSQL</span></div>\
+        </div>\
+      </div>\
+    </div>\
+  );\
+\}\
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);\
+</script>\
+</body>\
+</html>\
+}
